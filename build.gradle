@@ -1,0 +1,68 @@
+plugins {
+    id 'idea'
+    id 'jacoco'
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id "org.flywaydb.flyway" version "6.2.4"
+    id 'java'
+}
+
+group = 'com.vfc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+bootJar {
+    launchScript()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.hibernate:hibernate-jpamodelgen:5.4.17.Final'
+    implementation 'org.hibernate.validator:hibernate-validator'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    runtimeOnly 'mysql:mysql-connector-java'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.cucumber:cucumber-spring:4.8.0'
+    testImplementation 'io.cucumber:cucumber-junit:4.8.0'
+    testImplementation 'io.cucumber:cucumber-java:4.8.0'
+    testImplementation 'org.projectlombok:lombok'
+}
+
+springBoot {
+    buildInfo()
+}
+
+test {
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdump")
+        jacocoTestCoverageVerification {
+            violationRules {
+                rule {
+                    limit {
+                        minimum = 0.7
+                    }
+                    excludes = []
+                }
+            }
+        }
+    }
+}
