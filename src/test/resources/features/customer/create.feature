@@ -22,11 +22,44 @@ Feature: Insert a Customer
       | email | <email> |
     And the database is "online"
     When the user request a creation to this customer
-    Then the service will return 200 status code
+    Then the service will return 201 status code
     And the database is called to insert this customer:
       | id   | name   | cpf   | phone   | email   | status | creationDate        | lastUpdate          |
       | <id> | <name> | <cpf> | <phone> | <email> | ACTIVE | 2020-11-12T10:00:12 | 2020-11-12T10:00:12 |
     Examples:
       | id                                   | name    | cpf         | phone       | email                   |
-      | bf01879f-3a17-4b57-95ea-0881a58f7c44 | Karen   | 37856321504 | 11994313242 | karen.kake@gmail.com    |
+      | bf01879f-3a17-4b57-95ea-0881a58f7c44 | Karen   | 37856321504 | 11994313242 | karen.carmo@gmail.com   |
       | e1d40af7-c41d-4dc5-bf70-1da46d328f92 | Mariana | 56122110906 | 11992345678 | mariana.carmo@gmail.com |
+
+
+  Scenario Outline: Try to create a customer with bad request
+    Given the next customer creation data is:
+      | nextId | <id>                      |
+      | now    | 12/11/2020 - 10:00:12 UTC |
+    And the user prepare a request to create a customer with details as:
+      | name  | <name>  |
+      | cpf   | <cpf>   |
+      | phone | <phone> |
+      | email | <email> |
+    And the database is "online"
+    When the user request a creation to this customer
+    Then the service will return 400 status code
+    Examples:
+      | id                                   | name    | cpf         | phone       | email                   |
+      | bf01879f-3a17-4b57-95ea-0881a58f7c44 |         | 37856321504 | 11994313242 | karen.carmo@gmail.com   |
+      | e1d40af7-c41d-4dc5-bf70-1da46d328f92 | Karen   | 37          | 11992345678 | mariana.carmo@gmail.com |
+      | e1d40af7-c41d-4dc5-bf70-1da46d328f92 | Karen   | 37856321504 | 992345678   | mariana.carmogmail.com  |
+      | e1d40af7-c41d-4dc5-bf70-1da46d328f92 | Mariana | 56122110906 | 11992345678 | mariana.carmogmail.com  |
+
+  Scenario: Try to create a customer when the database is offline
+    Given the next customer creation data is:
+      | nextId | bf01879f-3a17-4b57-95ea-0881a58f7c44 |
+      | now    | 12/11/2020 - 10:00:12 UTC            |
+    And the user prepare a request to create a customer with details as:
+      | name  | Karen                 |
+      | cpf   | 37856321504           |
+      | phone | 11994313242           |
+      | email | karen.carmo@gmail.com |
+    And the database is "offline"
+    When the user request a creation to this customer
+    Then the service will return 500 status code

@@ -40,6 +40,7 @@ public class CustomerController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CustomerResponse createCustomer(@RequestBody @Valid CustomerRequest customerRequest) {
         return customerService.create(customerRequest);
     }
@@ -57,13 +58,13 @@ public class CustomerController {
         customerService.deleteById(customerId);
     }
 
-    @PatchMapping("/{customerId/activate}")
+    @PatchMapping("/{customerId}/activate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activateCustomer(@PathVariable(name = "customerId") UUID customerId) {
         customerService.activate(customerId);
     }
 
-    @PatchMapping("/{customerId/inactivate}")
+    @PatchMapping("/{customerId}/inactivate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inactivateCustomer(@PathVariable(name = "customerId") UUID customerId) {
         customerService.inactivate(customerId);
