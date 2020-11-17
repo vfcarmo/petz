@@ -8,13 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -44,12 +40,15 @@ public class PetController {
         return petService.findById(customerId, petId);
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public PetResponse addPet(@PathVariable(name = "customerId") UUID customerId,
                               @RequestBody @Valid PetRequest petRequest) {
-
         return petService.create(customerId, petRequest);
     }
 
+    @DeleteMapping("/{petId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removePet(@PathVariable(name = "customerId") UUID customerId,
                           @PathVariable(name = "petId") UUID petId) {
         petService.deleteById(customerId, petId);

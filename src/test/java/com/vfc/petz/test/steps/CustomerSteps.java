@@ -9,11 +9,9 @@ import com.vfc.petz.domain.dto.PageResponse;
 import com.vfc.petz.domain.entity.Customer;
 import com.vfc.petz.domain.entity.EntityStatus;
 import com.vfc.petz.domain.repository.CustomerRepository;
-import com.vfc.petz.domain.repository.PetRepository;
 import com.vfc.petz.test.ApiPetzTestData;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -32,7 +30,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -52,20 +49,15 @@ public class CustomerSteps {
 
     private final ApiPetzTestData testData;
     private final CustomerRepository customerRepository;
-    private final PetRepository petRepository;
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final EntitySampleFactory entitySampleFactory;
 
     @Autowired
-    public CustomerSteps(ApiPetzTestData testData, CustomerRepository customerRepository, PetRepository petRepository, MockMvc mockMvc,
-                         ObjectMapper objectMapper, EntitySampleFactory entitySampleFactory) {
+    public CustomerSteps(ApiPetzTestData testData, CustomerRepository customerRepository, MockMvc mockMvc, ObjectMapper objectMapper) {
         this.testData = testData;
         this.customerRepository = customerRepository;
-        this.petRepository = petRepository;
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
-        this.entitySampleFactory = entitySampleFactory;
     }
 
     @Before
@@ -80,7 +72,11 @@ public class CustomerSteps {
 
     @Given("database contains customers as:")
     public void databaseContainsCustomersAs(List<Customer> customers) {
+        given(customerRepository.findByIdAndStatusIsNot(any(UUID.class), any(EntityStatus.class)))
+                .willReturn(Optional.empty());
         customers.forEach(customer -> {
+            given(customerRepository.findByIdAndStatusIsNot(eq(customer.getId()), eq(EntityStatus.EXCLUDED)))
+                    .willReturn(Optional.of(customer));
             given(customerRepository.findByNameAndStatusIsNot(anyString(), eq(EntityStatus.EXCLUDED), any(Pageable.class)))
                     .willAnswer((Answer<Page<Customer>>) invocation -> {
                         String name = invocation.getArgument(0);
@@ -97,11 +93,7 @@ public class CustomerSteps {
 
                         return new PageImpl<>(customerList, pageable, customerList.size());
                     });
-            given(customerRepository.findByIdAndStatusIsNot(eq(customer.getId()), eq(EntityStatus.EXCLUDED)))
-                    .willReturn(Optional.of(customer));
         });
-
-
     }
 
     @Given("the next customer creation data is:")
@@ -226,6 +218,7 @@ public class CustomerSteps {
 
         this.testData.setResultActions(resultActions);
     }
+
     @When("the user request inactivation of the customer {string}")
     public void theUserRequestInactivationOfTheCustomerCustomerId(String customerId) throws Exception {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
@@ -270,7 +263,8 @@ public class CustomerSteps {
 
         MvcResult mvcResult = this.testData.getResultActions().andReturn();
 
-        CustomerResponse actualResponse = toObject(objectMapper, mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+        String actualJson = mvcResult.getResponse().getContentAsString();
+        CustomerResponse actualResponse = toObject(objectMapper, actualJson, CustomerResponse.class);
 
         Assert.assertEquals(expectedResponse, actualResponse);
     }

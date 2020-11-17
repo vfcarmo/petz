@@ -1,5 +1,6 @@
 package com.vfc.petz.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +42,7 @@ public class Pet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnore
     private Customer owner;
 
     @Enumerated(EnumType.STRING)

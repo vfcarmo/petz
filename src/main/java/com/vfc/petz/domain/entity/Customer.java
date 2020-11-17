@@ -1,5 +1,6 @@
 package com.vfc.petz.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tab_customer")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = "pets")
 public class Customer {
 
     @Id
@@ -43,6 +44,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,
             cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @JsonIgnore
     private List<Pet> pets = new ArrayList<>();
 
     @CreatedDate

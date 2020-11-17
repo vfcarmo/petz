@@ -11,7 +11,7 @@ Feature: Activate a customer by id
       | e1d40af7-c41d-4dc5-bf70-1da46d328f92 | Mariana     | 56122110906 | 11992345678 | mariana.carmo@gmail.com | ACTIVE   | 2020-12-10T18:33:10 | 2020-12-10T18:33:10 |
     And database contains pets as:
       | id                                   | name | type | observation | birthdate           | ownerId                              | status | creationDate        | lastUpdate          |
-      | 1caf959e-6b52-48f6-b049-e2e6f261b8d6 | Toto | DOG  |             | 2000-07-13T00:00:00 | 684e5119-6c38-4b20-9122-00faa9c8b413 | ACTIVE | 2020-11-10T18:33:10 | 2020-11-10T18:33:10 |
+      | 1caf959e-6b52-48f6-b049-e2e6f261b8d6 | Toto | DOG  |             | 2018-07-13T00:00:00 | 684e5119-6c38-4b20-9122-00faa9c8b413 | ACTIVE | 2020-11-10T18:33:10 | 2020-11-10T18:33:10 |
 
   Scenario Outline: Activate a customer successfully
     Given the database is "online"
