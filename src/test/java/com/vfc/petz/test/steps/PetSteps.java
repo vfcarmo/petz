@@ -75,7 +75,7 @@ public class PetSteps {
     @Given("database contains pets as:")
     public void databaseContainsPetsAs(List<Pet> pets) {
         pets.forEach(pet -> {
-            given(petRepository.findByNameAndOwnerIdAndStatusIsNot(anyString(), any(UUID.class),
+            given(petRepository.findByNameAndOwnerIdAndStatusIsNot(any(), any(UUID.class),
                     eq(EntityStatus.EXCLUDED), any(Pageable.class)))
                     .willAnswer((Answer<Page<Pet>>) invocation -> {
                         String name = invocation.getArgument(0);

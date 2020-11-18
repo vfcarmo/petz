@@ -13,13 +13,14 @@ import com.vfc.petz.domain.mappers.PageMapper;
 import com.vfc.petz.domain.mappers.PetMapper;
 import com.vfc.petz.domain.repository.CustomerRepository;
 import com.vfc.petz.domain.repository.PetRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -46,7 +47,12 @@ public class PetService {
 
         findCustomerById(ownerId);
 
-        final Page<Pet> petPage = petRepository.findByNameAndOwnerIdAndStatusIsNot(name, ownerId, EntityStatus.EXCLUDED, pageable);
+        String queryParameter = Optional.ofNullable(name)
+                .filter(StringUtils::isNotBlank)
+                .map(String::toUpperCase)
+                .orElse(null);
+
+        final Page<Pet> petPage = petRepository.findByNameAndOwnerIdAndStatusIsNot(queryParameter, ownerId, EntityStatus.EXCLUDED, pageable);
 
         return pageMapper.sourceToTarget(petPage.map(pet -> petMapper.sourceToTarget(pet, SAO_PAULO_TIME_ZONE)));
     }

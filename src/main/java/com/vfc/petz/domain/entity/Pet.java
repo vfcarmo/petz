@@ -33,7 +33,7 @@ public class Pet {
     @Column(nullable = false)
     private PetType type;
 
-    @Column(nullable = false)
+    @Column
     private String observation;
 
     @Column(name = "dt_birthdate", nullable = false)

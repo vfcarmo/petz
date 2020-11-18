@@ -1,6 +1,5 @@
 package com.vfc.petz.test.steps;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vfc.petz.PetzApplication;
 import com.vfc.petz.domain.entity.Customer;
 import com.vfc.petz.domain.entity.EntityStatus;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -40,17 +38,12 @@ public class CommonSteps {
     private final ApiPetzTestData testData;
     private final CustomerRepository customerRepository;
     private final PetRepository petRepository;
-    private final ObjectMapper objectMapper;
-    private final EntitySampleFactory entitySampleFactory;
 
     @Autowired
-    public CommonSteps(ApiPetzTestData testData, CustomerRepository customerRepository, PetRepository petRepository,
-                       Jackson2ObjectMapperBuilder objectMapperBuilder, EntitySampleFactory entitySampleFactory) {
+    public CommonSteps(ApiPetzTestData testData, CustomerRepository customerRepository, PetRepository petRepository) {
         this.testData = testData;
         this.customerRepository = customerRepository;
         this.petRepository = petRepository;
-        this.objectMapper = objectMapperBuilder.build();
-        this.entitySampleFactory = entitySampleFactory;
     }
 
     @Before

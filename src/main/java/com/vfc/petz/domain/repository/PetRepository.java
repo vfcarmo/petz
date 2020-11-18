@@ -18,6 +18,6 @@ public interface PetRepository extends CrudRepository<Pet, UUID> {
 
     Optional<Pet> findByIdAndStatusIsNot(UUID id, EntityStatus status);
 
-    @Query("SELECT p FROM Pet p WHERE p.owner.id = :ownerId and (:name is null or p.name = :name) and (p.status <> :status)")
+    @Query("SELECT p FROM Pet p WHERE p.owner.id = :ownerId and (:name is null or UPPER(p.name) LIKE :name%) and (p.status <> :status)")
     Page<Pet> findByNameAndOwnerIdAndStatusIsNot(String name, UUID ownerId, EntityStatus status, Pageable pageable);
 }

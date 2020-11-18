@@ -42,7 +42,7 @@ public class CustomerService {
 
         String queryParameter = Optional.ofNullable(name)
                 .filter(StringUtils::isNotBlank)
-                .map(parameter -> parameter.toUpperCase() + "%")
+                .map(String::toUpperCase)
                 .orElse(null);
 
         final Page<Customer> customerPage = customerRepository.findByNameAndStatusIsNot(queryParameter, EntityStatus.EXCLUDED, pageable);

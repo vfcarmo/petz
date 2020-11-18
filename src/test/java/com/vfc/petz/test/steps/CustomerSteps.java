@@ -86,7 +86,6 @@ public class CustomerSteps {
 
                     List<Customer> customerList = Optional.ofNullable(name)
                             .filter(StringUtils::isNoneBlank)
-                            .map(n -> n.substring(0, n.length() - 1)) //removing the '%'
                             .map(n -> customers.stream()
                                     .filter(c -> c.getName().toUpperCase().startsWith(n.toUpperCase()) && c.getStatus() != status)
                                     .collect(Collectors.toList()))
