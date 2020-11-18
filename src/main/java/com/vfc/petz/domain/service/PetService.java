@@ -41,15 +41,17 @@ public class PetService {
         this.pageMapper = pageMapper;
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional
     public PageResponse<PetResponse> listAll(UUID ownerId, String name, Pageable pageable) {
+
+        findCustomerById(ownerId);
 
         final Page<Pet> petPage = petRepository.findByNameAndOwnerIdAndStatusIsNot(name, ownerId, EntityStatus.EXCLUDED, pageable);
 
         return pageMapper.sourceToTarget(petPage.map(pet -> petMapper.sourceToTarget(pet, SAO_PAULO_TIME_ZONE)));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public PetResponse findById(UUID ownerId, UUID id) {
 
         final Pet savedPet = findByIdAndOwner(id, ownerId);
@@ -57,7 +59,7 @@ public class PetService {
         return petMapper.sourceToTarget(savedPet, SAO_PAULO_TIME_ZONE);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public PetResponse create(UUID ownerId, PetRequest petRequest) {
 
         final Customer owner = findCustomerById(ownerId);
@@ -73,12 +75,12 @@ public class PetService {
         return petMapper.sourceToTarget(savedPet, SAO_PAULO_TIME_ZONE);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void deleteById(UUID ownerId, UUID petId) {
 
         final Pet savedPet = findByIdAndOwner(petId, ownerId);
 
-        petRepository.deleteById(savedPet.getId());
+        savedPet.setStatus(EntityStatus.EXCLUDED);
     }
 
     private Pet findByIdAndOwner(UUID id, UUID ownerId) {

@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
         features = {"src/test/resources/features"},
         glue = "com.vfc.petz.test",
         plugin = {"pretty", "html:build/cucumber-html-report"},
-//        tags = "@1",
         strict = true)
 public class ApiPetzTest {
 }

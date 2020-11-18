@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "1d5e496a-b25d-416d-916c-28be24d122a3",
+		"name": "Petz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "List all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers?name=Vitor carmo&page=0&size=30",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Vitor carmo"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Vitor Carmo\",\n\t\"cpf\": \"75837225781\",\n\t\"phone\": \"1192345678\",\n\t\"email\": \"vitor.carmo@petz.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Vitor Carmo\",\n\t\"phone\": \"1192345678\",\n\t\"email\": \"vitor_carmo@petz.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/activate",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inactivate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/inactivate",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"inactivate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "List all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/pets?name=Rex&page=0&size=30",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"pets"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Rex"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Rex\",\n\t\"type\": \"DOG\",\n\t\"observation\": \"Crazy dog\",\n\t\"birthdate\": \"2010-07-01T00:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/pets",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/pets/86681354-8a53-44ab-9a3d-79f2394c1b8f",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"pets",
+								"86681354-8a53-44ab-9a3d-79f2394c1b8f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://api.algafood.local:8080/customers/94916493-9ff8-4d1c-b2ee-ab64c0549c22/pets/86681354-8a53-44ab-9a3d-79f2394c1b8f",
+							"protocol": "http",
+							"host": [
+								"api",
+								"algafood",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"94916493-9ff8-4d1c-b2ee-ab64c0549c22",
+								"pets",
+								"86681354-8a53-44ab-9a3d-79f2394c1b8f"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

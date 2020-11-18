@@ -2,23 +2,20 @@ version: '3'
 
 services:
 
-  mysql:
-    image: mysql
-    restart: always
+  postgres:
+    image: "postgres"
+    ports:
+      - "5432:5432"
     networks:
       - devops-network
-    container_name: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    container_name: postgres
     environment:
-      - MYSQL_DATABASE=petz
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=admin
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      POSTGRES_DB: "petz"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "petz"
     volumes:
-      - .docker-volume/mysql-data/db:/var/lib/mysql:rw
-    ports:
-      - 3306:3306
+      - ~/Petz_DB/data:/var/lib/postgresql/data:rw
 
   adminer:
     image: adminer
@@ -29,7 +26,7 @@ services:
     ports:
       - 8810:8080
     depends_on:
-      - mysql
+      - postgres
 
 networks:
   devops-network:

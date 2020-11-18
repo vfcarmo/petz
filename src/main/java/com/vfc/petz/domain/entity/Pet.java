@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,11 +49,11 @@ public class Pet {
     @Column(nullable = false)
     private EntityStatus status;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "dt_creation", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "dt_last_update", nullable = false)
     private LocalDateTime lastUpdate;
 }

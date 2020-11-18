@@ -15,7 +15,6 @@ import io.cucumber.java.en.Then;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureMockRestServiceServer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,6 @@ import org.springframework.test.context.ContextConfiguration;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.reset;
@@ -74,7 +72,7 @@ public class CommonSteps {
     }
 
     private void setCustomerRepositoryOffline() {
-        given(customerRepository.findByNameAndStatusIsNot(anyString(), any(EntityStatus.class), any(Pageable.class)))
+        given(customerRepository.findByNameAndStatusIsNot(any(), any(EntityStatus.class), any(Pageable.class)))
                 .willThrow(RuntimeException.class);
         given(customerRepository.findByIdAndStatusIsNot(any(UUID.class), any(EntityStatus.class)))
                 .willThrow(RuntimeException.class);
@@ -88,7 +86,7 @@ public class CommonSteps {
     private void setPetRepositoryOffline() {
         given(petRepository.findByIdAndStatusIsNot(any(UUID.class), any(EntityStatus.class)))
                 .willThrow(RuntimeException.class);
-        given(petRepository.findByNameAndOwnerIdAndStatusIsNot(anyString(), any(UUID.class), any(EntityStatus.class), any(Pageable.class)))
+        given(petRepository.findByNameAndOwnerIdAndStatusIsNot(any(), any(UUID.class), any(EntityStatus.class), any(Pageable.class)))
                 .willThrow(RuntimeException.class);
         given(petRepository.save(any(Pet.class)))
                 .willThrow(RuntimeException.class);

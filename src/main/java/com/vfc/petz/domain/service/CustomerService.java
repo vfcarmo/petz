@@ -10,13 +10,14 @@ import com.vfc.petz.domain.exception.CustomerNotFoundException;
 import com.vfc.petz.domain.mappers.CustomerMapper;
 import com.vfc.petz.domain.mappers.PageMapper;
 import com.vfc.petz.domain.repository.CustomerRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -36,15 +37,20 @@ public class CustomerService {
         this.pageMapper = pageMapper;
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    @Transactional
     public PageResponse<CustomerResponse> listAll(String name, Pageable pageable) {
 
-        final Page<Customer> customerPage = customerRepository.findByNameAndStatusIsNot(name, EntityStatus.EXCLUDED, pageable);
+        String queryParameter = Optional.ofNullable(name)
+                .filter(StringUtils::isNotBlank)
+                .map(parameter -> parameter.toUpperCase() + "%")
+                .orElse(null);
+
+        final Page<Customer> customerPage = customerRepository.findByNameAndStatusIsNot(queryParameter, EntityStatus.EXCLUDED, pageable);
 
         return pageMapper.sourceToTarget(customerPage.map(customer -> customerMapper.sourceToTarget(customer, SAO_PAULO_TIME_ZONE)));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public CustomerResponse findById(UUID customerId) {
 
         final Customer savedCustomer = findCustomerById(customerId);
@@ -52,7 +58,7 @@ public class CustomerService {
         return customerMapper.sourceToTarget(savedCustomer, SAO_PAULO_TIME_ZONE);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public CustomerResponse create(CustomerRequest customerRequest) {
 
         final Customer customer = customerMapper.targetToSource(customerRequest, SAO_PAULO_TIME_ZONE);
@@ -63,14 +69,14 @@ public class CustomerService {
         return customerMapper.sourceToTarget(savedCustomer, SAO_PAULO_TIME_ZONE);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void update(UUID customerId, CustomerUpdateRequest customerUpdateRequest) {
         final Customer savedCustomer = findCustomerById(customerId);
 
         customerMapper.updateFromRequest(customerUpdateRequest, savedCustomer);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void deleteById(UUID customerId) {
 
         final Customer savedCustomer = findCustomerById(customerId);
@@ -78,14 +84,14 @@ public class CustomerService {
         savedCustomer.setStatus(EntityStatus.EXCLUDED);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void activate(UUID customerId) {
         final Customer savedCustomer = findCustomerById(customerId);
 
         savedCustomer.setStatus(EntityStatus.ACTIVE);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void inactivate(UUID customerId) {
         final Customer savedCustomer = findCustomerById(customerId);
 

@@ -77,23 +77,25 @@ public class CustomerSteps {
         customers.forEach(customer -> {
             given(customerRepository.findByIdAndStatusIsNot(eq(customer.getId()), eq(EntityStatus.EXCLUDED)))
                     .willReturn(Optional.of(customer));
-            given(customerRepository.findByNameAndStatusIsNot(anyString(), eq(EntityStatus.EXCLUDED), any(Pageable.class)))
-                    .willAnswer((Answer<Page<Customer>>) invocation -> {
-                        String name = invocation.getArgument(0);
-                        Pageable pageable = invocation.getArgument(2);
-
-                        List<Customer> customerList = Optional.ofNullable(name)
-                                .filter(StringUtils::isNoneBlank)
-                                .map(n -> customers.stream()
-                                        .filter(c -> c.getName().toUpperCase().startsWith(n.toUpperCase()) && c.getStatus() != EntityStatus.EXCLUDED)
-                                        .collect(Collectors.toList()))
-                                .orElse(customers.stream()
-                                        .filter(c -> c.getStatus() != EntityStatus.EXCLUDED)
-                                        .collect(Collectors.toList()));
-
-                        return new PageImpl<>(customerList, pageable, customerList.size());
-                    });
         });
+        given(customerRepository.findByNameAndStatusIsNot(any(), any(EntityStatus.class), any(Pageable.class)))
+                .willAnswer((Answer<Page<Customer>>) invocation -> {
+                    String name = invocation.getArgument(0);
+                    EntityStatus status = invocation.getArgument(1);
+                    Pageable pageable = invocation.getArgument(2);
+
+                    List<Customer> customerList = Optional.ofNullable(name)
+                            .filter(StringUtils::isNoneBlank)
+                            .map(n -> n.substring(0, n.length() - 1)) //removing the '%'
+                            .map(n -> customers.stream()
+                                    .filter(c -> c.getName().toUpperCase().startsWith(n.toUpperCase()) && c.getStatus() != status)
+                                    .collect(Collectors.toList()))
+                            .orElse(customers.stream()
+                                    .filter(c -> c.getStatus() != status)
+                                    .collect(Collectors.toList()));
+
+                    return new PageImpl<>(customerList, pageable, customerList.size());
+                });
     }
 
     @Given("the next customer creation data is:")
